@@ -37,7 +37,7 @@ function App() {
     <div className="app">
       <div className="header">
         <h1>Countries Explorer</h1>
-        <p>{"   "} Explore countries around the world</p>
+        <p>Explore countries around the world</p>
       </div>
 
       {/* BACK BUTTON */}
@@ -69,7 +69,7 @@ function App() {
       {selectedCountry && (
         <div className="single-card">
           <img
-            src={selectedCountry.flags.png}
+            src={selectedCountry.flags.svg}
             alt={`${selectedCountry.name.common} flag`}
           />
           <h2>{selectedCountry.name.common}</h2>
@@ -102,7 +102,7 @@ function App() {
                 onClick={() => setSelectedCountry(country)}
               >
                 <img
-                  src={country.flags.png}
+                  src={country.flags.svg}
                   alt={`${country.name.common} flag`}
                 />
                 <h3>{country.name.common}</h3>
