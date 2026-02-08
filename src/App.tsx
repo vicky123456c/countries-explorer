@@ -12,7 +12,8 @@ function App() {
 
   useEffect(() => {
     fetch(
-      "https://restcountries.com/v3.1/all?fields=name,capital,population,flags,cca3"
+      "https://restcountries.com/v3.1/all?fields=name,capital,population,flags,cca3,region,currencies"
+,
     )
       .then((response) => {
         if (!response.ok) {
@@ -32,7 +33,7 @@ function App() {
 
   const filteredCountries = countries
     .filter((country) =>
-      country.name.common.toLowerCase().includes(search.toLowerCase())
+      country.name.common.toLowerCase().includes(search.toLowerCase()),
     )
     .sort((a, b) => {
       if (sortBy === "name") {
@@ -44,20 +45,17 @@ function App() {
 
   return (
     <div className="app">
-      {/* HEADER */}
       <div className="header">
         <h1>Countries Explorer</h1>
         <p>Explore countries around the world</p>
       </div>
 
-      {/* BACK BUTTON */}
       {selectedCountry && (
         <button onClick={() => setSelectedCountry(null)}>
           ← Back to all countries
         </button>
       )}
 
-      {/* SEARCH + SORT */}
       {!selectedCountry && (
         <div className="search-bar">
           <input
@@ -68,9 +66,7 @@ function App() {
           />
 
           <button
-            onClick={() =>
-              setSortBy(sortBy === "name" ? "population" : "name")
-            }
+            onClick={() => setSortBy(sortBy === "name" ? "population" : "name")}
           >
             Sort by {sortBy === "name" ? "Population" : "Name"}
           </button>
@@ -80,11 +76,11 @@ function App() {
       {loading && <p>Loading countries...</p>}
       {error && <p className="error">{error}</p>}
 
-      {!loading && !error && !selectedCountry && filteredCountries.length === 0 && (
-        <p>No countries found.</p>
-      )}
+      {!loading &&
+        !error &&
+        !selectedCountry &&
+        filteredCountries.length === 0 && <p>No countries found.</p>}
 
-      {/* SINGLE COUNTRY VIEW */}
       {selectedCountry && (
         <div className="single-card">
           <img
@@ -92,10 +88,11 @@ function App() {
             alt={`${selectedCountry.name.common} flag`}
           />
           <h2>{selectedCountry.name.common}</h2>
-
+<p>
+  <strong>Continent:</strong> {selectedCountry.region}
+</p>
           <p>
-            <strong>Capital:</strong>{" "}
-            {selectedCountry.capital?.[0] || "N/A"}
+            <strong>Capital:</strong> {selectedCountry.capital?.[0] || "N/A"}
           </p>
 
           <p>
@@ -105,7 +102,6 @@ function App() {
         </div>
       )}
 
-      {/* GRID VIEW */}
       {!selectedCountry && (
         <ul className="countries-grid">
           {!loading &&
@@ -123,8 +119,7 @@ function App() {
                 <h3>{country.name.common}</h3>
 
                 <p>
-                  <strong>Capital:</strong>{" "}
-                  {country.capital?.[0] || "N/A"}
+                  <strong>Capital:</strong> {country.capital?.[0] || "N/A"}
                 </p>
 
                 <p>
