@@ -5,17 +5,13 @@ function App() {
   const [countries, setCountries] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
+  const [search, setSearch] = useState<string>("");
   const [sortBy, setSortBy] = useState<"name" | "population">("name");
-
   const [selectedCountry, setSelectedCountry] = useState<any | null>(null);
 
   useEffect(() => {
     fetch(
-      "https://restcountries.com/v3.1/all?fields=name,capital,population,flags,cca3,region,currencies",
+      "https://restcountries.com/v3.1/all?fields=name,capital,population,flags,cca3,region,currencies"
     )
       .then((response) => {
         if (!response.ok) {
@@ -33,9 +29,10 @@ function App() {
       });
   }, []);
 
+
   const filteredCountries = countries
     .filter((country) =>
-      country.name.common.toLowerCase().includes(searchQuery.toLowerCase()),
+      country.name.common.toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
       if (sortBy === "name") {
@@ -46,30 +43,33 @@ function App() {
 
   return (
     <div className="app">
+     
       <div className="header">
         <h1>Countries Explorer</h1>
         <p>Explore countries around the world</p>
       </div>
 
+      
       {selectedCountry && (
         <button onClick={() => setSelectedCountry(null)}>
           ← Back to all countries
         </button>
       )}
 
+      
       {!selectedCountry && (
         <div className="search-bar">
           <input
             type="text"
             placeholder="Search countries..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
 
-          <button onClick={() => setSearchQuery(searchInput)}>Search</button>
-
           <button
-            onClick={() => setSortBy(sortBy === "name" ? "population" : "name")}
+            onClick={() =>
+              setSortBy(sortBy === "name" ? "population" : "name")
+            }
           >
             Sort by {sortBy === "name" ? "Population" : "Name"}
           </button>
@@ -82,8 +82,11 @@ function App() {
       {!loading &&
         !error &&
         !selectedCountry &&
-        filteredCountries.length === 0 && <p>No countries found.</p>}
+        filteredCountries.length === 0 && (
+          <p>No countries found.</p>
+        )}
 
+  
       {selectedCountry && (
         <div className="single-card">
           <img
@@ -97,7 +100,8 @@ function App() {
           </p>
 
           <p>
-            <strong>Capital:</strong> {selectedCountry.capital?.[0] || "N/A"}
+            <strong>Capital:</strong>{" "}
+            {selectedCountry.capital?.[0] || "N/A"}
           </p>
 
           <p>
@@ -107,6 +111,7 @@ function App() {
         </div>
       )}
 
+     
       {!selectedCountry && (
         <ul className="countries-grid">
           {!loading &&
@@ -126,7 +131,8 @@ function App() {
                 <p className="region">{country.region}</p>
 
                 <p>
-                  <strong>Capital:</strong> {country.capital?.[0] || "N/A"}
+                  <strong>Capital:</strong>{" "}
+                  {country.capital?.[0] || "N/A"}
                 </p>
 
                 <p>
