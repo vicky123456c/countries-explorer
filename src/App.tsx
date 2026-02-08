@@ -6,14 +6,19 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [search, setSearch] = useState<string>("");
+  // SEARCH STATES
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // SORT STATE
   const [sortBy, setSortBy] = useState<"name" | "population">("name");
+
+  // SINGLE COUNTRY VIEW
   const [selectedCountry, setSelectedCountry] = useState<any | null>(null);
 
   useEffect(() => {
     fetch(
       "https://restcountries.com/v3.1/all?fields=name,capital,population,flags,cca3,region,currencies"
-,
     )
       .then((response) => {
         if (!response.ok) {
@@ -33,40 +38,50 @@ function App() {
 
   const filteredCountries = countries
     .filter((country) =>
-      country.name.common.toLowerCase().includes(search.toLowerCase()),
+      country.name.common
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {
       if (sortBy === "name") {
         return a.name.common.localeCompare(b.name.common);
-      } else {
-        return b.population - a.population;
       }
+      return b.population - a.population;
     });
 
   return (
     <div className="app">
+      {/* HEADER */}
       <div className="header">
         <h1>Countries Explorer</h1>
         <p>Explore countries around the world</p>
       </div>
 
+      {/* BACK BUTTON */}
       {selectedCountry && (
         <button onClick={() => setSelectedCountry(null)}>
           ← Back to all countries
         </button>
       )}
 
+      {/* SEARCH + SORT */}
       {!selectedCountry && (
         <div className="search-bar">
           <input
             type="text"
             placeholder="Search countries..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
 
+          <button onClick={() => setSearchQuery(searchInput)}>
+            Search
+          </button>
+
           <button
-            onClick={() => setSortBy(sortBy === "name" ? "population" : "name")}
+            onClick={() =>
+              setSortBy(sortBy === "name" ? "population" : "name")
+            }
           >
             Sort by {sortBy === "name" ? "Population" : "Name"}
           </button>
@@ -79,8 +94,11 @@ function App() {
       {!loading &&
         !error &&
         !selectedCountry &&
-        filteredCountries.length === 0 && <p>No countries found.</p>}
+        filteredCountries.length === 0 && (
+          <p>No countries found.</p>
+        )}
 
+      {/* SINGLE COUNTRY VIEW */}
       {selectedCountry && (
         <div className="single-card">
           <img
@@ -88,20 +106,26 @@ function App() {
             alt={`${selectedCountry.name.common} flag`}
           />
           <h2>{selectedCountry.name.common}</h2>
-<p>
-  <strong>Continent:</strong> {selectedCountry.region}
-</p>
+
           <p>
-            <strong>Capital:</strong> {selectedCountry.capital?.[0] || "N/A"}
+            <strong>Continent:</strong> {selectedCountry.region}
+          </p>
+
+          <p>
+            <strong>Capital:</strong>{" "}
+            {selectedCountry.capital?.[0] || "N/A"}
           </p>
 
           <p>
             <strong>Population:</strong>{" "}
             {selectedCountry.population.toLocaleString()}
           </p>
+
+        
         </div>
       )}
 
+      {/* GRID VIEW */}
       {!selectedCountry && (
         <ul className="countries-grid">
           {!loading &&
@@ -116,10 +140,13 @@ function App() {
                   src={country.flags.svg}
                   alt={`${country.name.common} flag`}
                 />
+
                 <h3>{country.name.common}</h3>
+                <p className="region">{country.region}</p>
 
                 <p>
-                  <strong>Capital:</strong> {country.capital?.[0] || "N/A"}
+                  <strong>Capital:</strong>{" "}
+                  {country.capital?.[0] || "N/A"}
                 </p>
 
                 <p>

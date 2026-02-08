@@ -4,6 +4,7 @@
   background-color: #fafafa;
 }
 
+/* HEADER */
 .header {
   margin-bottom: 24px;
   border-bottom: 1px solid #eee;
@@ -21,16 +22,22 @@
   color: #666;
 }
 
+/* SEARCH BAR */
 .search-bar {
   display: flex;
   gap: 10px;
   margin: 18px 0;
 }
 
-.search-bar input {
-  padding: 10px 12px;
-  width: 240px;
+.search-bar input,
+.search-bar button {
+  height: 40px;          /* 🔑 SAME HEIGHT */
   border-radius: 8px;
+}
+
+.search-bar input {
+  padding: 0 12px;
+  width: 240px;
   border: 1px solid #ccc;
   outline: none;
 }
@@ -40,8 +47,7 @@
 }
 
 .search-bar button {
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 0 16px;
   border: none;
   background-color: #111;
   color: white;
@@ -52,10 +58,12 @@
   background-color: #333;
 }
 
+/* ERROR */
 .error {
   color: red;
 }
 
+/* GRID */
 .countries-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 180px);
@@ -64,15 +72,14 @@
   padding: 0;
 }
 
+/* CARD */
 .country-card {
   background-color: white;
   border-radius: 12px;
   padding: 10px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .country-card:hover {
@@ -87,15 +94,16 @@
   border-radius: 8px;
   margin-bottom: 8px;
 }
+
+.country-card h3 {
+  font-size: 14px;
+  margin: 6px 0 2px;
+}
+
 .region {
   font-size: 11px;
   color: #777;
   margin-bottom: 4px;
-}
-
-.country-card h3 {
-  font-size: 14px;
-  margin: 6px 0 4px;
 }
 
 .country-card p {
@@ -104,6 +112,7 @@
   color: #444;
 }
 
+/* SINGLE VIEW */
 .single-card {
   max-width: 420px;
   background-color: white;
